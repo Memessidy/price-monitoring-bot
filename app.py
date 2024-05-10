@@ -22,7 +22,7 @@ async def update_database():
         now = datetime.datetime.now()
         seconds_to_next_hour = (60 - now.minute) * 60 - now.second
         delta = datetime.timedelta(seconds=seconds_to_next_hour)
-        print(f"There are {delta} left until the next hour starts\nWaiting...")
+        print(f"There are {delta} left until the next hour starts\nWaiting for the next hour to update the price...")
         await asyncio.sleep(seconds_to_next_hour)
 
         loop = asyncio.get_event_loop()
