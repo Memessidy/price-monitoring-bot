@@ -9,3 +9,9 @@ To start using this script, you need to:
 - Activate the virtual environment: ```.venv\Scripts\activate```
 - Install all necessary dependencies: ```pip install -r requirements.txt```
 - Start: ```python app.py```
+
+To run on local macine:
+- Open the .env file and replace YourToken on your key from Telegram
+
+Deploy:
+- delete .env file, than add environment variables form .env
