@@ -20,15 +20,17 @@ async def start_cmd(message: types.Message):
 
 @user_private_router.message(Command('get_exchange_rate'))
 async def get_exchange_rate(message: types.Message):
+
     loop = asyncio.get_event_loop()
-    result = await loop.run_in_executor(None, parser.get_current_prices_sheet)
-    if not result:
-        await message.answer(f"Currently, there is no data in the database for today. "
-                             f"Next data update in {date_and_time.time_to_next_hour}")
-    else:
+    await loop.run_in_executor(None, parser.get_current_prices_sheet)
+
+    if parser.sheet_exists:
         file = FSInputFile(os.getenv('XLSX_PATH'))
         await message.answer_document(file)
         await message.answer(f"Next data update in {date_and_time.time_to_next_hour}")
+    else:
+        await message.answer(f"Currently, there is no data in the database for today. "
+                             f"Next data update in {date_and_time.time_to_next_hour}")
 
 
 @user_private_router.message(Command('get_timezone'))

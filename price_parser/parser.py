@@ -19,8 +19,10 @@ class MyParser:
         self.__database = DataBase()
         self.__database.create_tables()
         self.__excel_writer = ExcelWriter()
-        self.__relevant_sheet = False
         self.__header = ['datetime', 'exchange_rate']
+
+        self.__new_data_available = False
+        self.__sheet_exists = False
 
     def __get_price(self):
         page = requests.get(self.__url, headers=headers).content
@@ -35,24 +37,22 @@ class MyParser:
         self.__excel_writer.add_data(values)
         self.__excel_writer.set_column_width(columns_width)
         self.__excel_writer.save()
+        self.__sheet_exists = True
 
     def update_price(self, current_datetime):
         current_price = self.__get_price()
         self.__database.insert_data(price=current_price, date=current_datetime)
-        self.__relevant_sheet = False
+        self.__new_data_available = True
         print("Database updated")
 
     def get_current_prices_sheet(self):
-        if not self.__relevant_sheet:
-            self.__relevant_sheet = True
-
+        if self.__new_data_available:
             vals = [(str(item.date.strftime("%d.%m.%Y %H:%M:%S")), item.price)
                     for item in self.__database.get_current_prices()]
-
-            if not vals:
-                return False
-            else:
+            if vals:
                 self.__get_new_sheet(vals)
-                return True
-        else:
-            return True
+            self.__new_data_available = False
+
+    @property
+    def sheet_exists(self):
+        return self.__sheet_exists
