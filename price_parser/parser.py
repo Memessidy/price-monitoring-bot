@@ -54,3 +54,5 @@ class MyParser:
             else:
                 self.__get_new_sheet(vals)
                 return True
+        else:
+            return True
