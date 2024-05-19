@@ -1,7 +1,5 @@
 # Price monitoring bot
 
-## This bot in Telegram: 
-- https://t.me/ExchangeTestMonitoringBot
 
 ### This bot fetches the USD/UAH exchange rate from Google Finance, stores the values in an SQLite database, and sends the accumulated price values to the user over time.
 
